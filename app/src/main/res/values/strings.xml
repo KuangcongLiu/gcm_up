@@ -22,7 +22,7 @@
     -->
     <!-- gcm demo -->
     <!-- general stuff -->
-    <string name="gcm_project_id">813916479990</string>
+    <string name="gcm_project_id">891425198708</string>
     <string name="gcm_demo_app_name">GCM Demo</string>
     <string name="gcm_demo_copyright">2014</string>
 
@@ -53,8 +53,8 @@
     <string name="user_name">User name</string>
     <string name="txt_message_hint">Your message</string>
     <string name="txt_demo_header">GCM Demo</string>
-    <string name="no_message">No message entered</string>
-    <string name="msg_received">Message received: %1$s</string>
+    <string name="no_message">Hello</string>
+    <string name="msg_received">HELLO Message received: %1$s</string>
     <string name="msg_sent">Message sent: %1$s</string>
     <string name="txt_no_play_services">
         <![CDATA[

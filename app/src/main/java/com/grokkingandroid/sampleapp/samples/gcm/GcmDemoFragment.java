@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,6 +38,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.grokkingandroid.sampleapp.samples.gcm.Constants.EventbusMessageType;
 import com.grokkingandroid.sampleapp.samples.gcm.Constants.State;
+
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -161,7 +164,14 @@ public class GcmDemoFragment extends DemoBaseFragment implements
             break;
          }
       } else if (view.getId() == R.id.btn_send_message) {
-         sendMessage();
+            try {
+
+               sendMessage();
+               //TimeUnit.SECONDS.sleep(5);
+
+            } catch (InterruptedException e) {
+               e.printStackTrace();
+            }
       } else if (view.getId() == R.id.btn_select_account) {
          startAccountSelector();
       }
@@ -201,22 +211,71 @@ public class GcmDemoFragment extends DemoBaseFragment implements
       getActivity().startService(regIntent);
    }
 
-   private void sendMessage() {
+   /*private void sendMessage() throws InterruptedException {
       Intent msgIntent = new Intent(getActivity(), GcmIntentService.class);
       msgIntent.setAction(Constants.ACTION_ECHO);
       String msg;
-      if (!TextUtils.isEmpty(mTxtMsg.getText())) {
-         msg = mTxtMsg.getText().toString();
-         mTxtMsg.setText("");
+      String[] arr={"Hello","world","cse","110","software","engineering"};
+      for(int i=0;i<6;i++) {
+
+         if (!TextUtils.isEmpty(mTxtMsg.getText())) {
+            msg = mTxtMsg.getText().toString();
+            mTxtMsg.setText("");
+         } else {
+            msg = arr[i];
+            //getActivity().getString(R.string.no_message);
+            //Thread.sleep(10000);
+            //TimeUnit.SECONDS.sleep(5);
+
+         }
+         String msgTxt = getString(R.string.msg_sent, msg);
+         Crouton.showText(getActivity(), msgTxt, Style.INFO);
+         msgIntent.putExtra(Constants.KEY_MESSAGE_TXT, msg);
+         getActivity().startService(msgIntent);
       }
-      else {
-         msg = getActivity().getString(R.string.no_message);
-      }
-      String msgTxt = getString(R.string.msg_sent, msg);
-      Crouton.showText(getActivity(), msgTxt, Style.INFO);            
-      msgIntent.putExtra(Constants.KEY_MESSAGE_TXT, msg);
-      getActivity().startService(msgIntent);
+
+
+
+   }*/
+
+   private void sendMessage() throws InterruptedException {
+      //for (int i = 0; i < 6; i++) {
+         CountDownTimer c1 = new CountDownTimer(30000, 5000) {
+            int i=0;
+            @Override
+            public void onTick(long millisUntilFinished) {
+               Intent msgIntent = new Intent(getActivity(), GcmIntentService.class);
+               msgIntent.setAction(Constants.ACTION_ECHO);
+               String msg;
+               String[] arr = {"Hello", "world", "cse", "110", "software", "engineering"};
+
+               if (!TextUtils.isEmpty(mTxtMsg.getText())) {
+                  msg = mTxtMsg.getText().toString();
+                  mTxtMsg.setText("");
+               } else {
+                  msg = arr[i];
+                  //getActivity().getString(R.string.no_message);
+                  //Thread.sleep(10000);
+                  //TimeUnit.SECONDS.sleep(5);
+
+               }
+               String msgTxt = getString(R.string.msg_sent, msg);
+               Crouton.showText(getActivity(), msgTxt, Style.INFO);
+               msgIntent.putExtra(Constants.KEY_MESSAGE_TXT, msg);
+               getActivity().startService(msgIntent);
+               i++;
+            }
+
+
+         @Override
+         public void onFinish () {
+         }
+      }.start();
+
+
    }
+
+
 
     /**
      * EventBus messages.
